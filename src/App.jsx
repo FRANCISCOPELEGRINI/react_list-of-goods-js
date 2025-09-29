@@ -1,6 +1,7 @@
 import 'bulma/css/bulma.css';
 import './App.scss';
-
+import { useState } from React
+import React from 'react';
 export const goodsFromServer = [
   'Dumplings',
   'Carrot',
@@ -15,20 +16,20 @@ export const goodsFromServer = [
 ];
 
 export const App = () => {
-  let alphabeticallyClassName = "button is-info is-light"
-  let lengthClassName = "button is-success is-light"
-  let reverseClassName = "button is-warning is-light"
-  let resetClassName = "button is-danger is-light"
+  let [alphabeticallyClassName, setalphabeticallyClassName] = useState("button is-info is-light")
+  let [lengthClassName, setlengthClassName] = useState("button is-success is-light")
+  let [reverseClassName, setreverseClassName] = useState("button is-warning is-light")
+  let [resetClassName, setresetClassName] = useState("button is-danger is-light")
   let [listaVisivel, setarListasVisivel] = useState(goodsFromServer)
    
-  function alphabetically () {
-    return listaVisivel.sort((good1,good2) => good1.length - good2.length)
+  function handleSortAlphabetically () {
+    return [...listaVisivel].sort()
   }
-  function sortbylength () {
-     return listaVisivel.sort()
+  function handleSortByLength () {
+     return [...listaVisivel].sort((good1,good2) => good1.length - good2.length)
   }
-  function reverse () {
-    return listaVisivel.reverse()
+  function handleToggleReverse () {
+    return [...listaVisivel].reverse()
   }
   
   return(
@@ -38,8 +39,8 @@ export const App = () => {
       <button 
       type="button" className={alphabeticallyClassName}
       onClick={ () => {
-        setarListasVisivel(alphabetically());
-        alphabeticallyClassName = "button is-info"}}
+        setarListasVisivel(handleSortAlphabetically());
+        setalphabeticallyClassName("button is-info")}}
       >
         Sort alphabetically
       </button>
@@ -47,8 +48,8 @@ export const App = () => {
       <button 
       type="button" className={lengthClassName}
       onClick={ () => {
-        setarListasVisivel(sortbylength())
-        lengthClassName = "button is-success"
+        setarListasVisivel(handleSortByLength())
+        setlengthClassName("button is-success")
       }}
       >
         Sort by length
@@ -57,8 +58,8 @@ export const App = () => {
       <button 
       type="button" className={reverseClassName}
       onClick={ () => {
-        setarListasVisivel(reverse())
-        reverseClassName = "button is-warning"
+        setarListasVisivel(handleToggleReverse())
+        setreverseClassName("button is-warning")
       }}
       >
         Reverse
@@ -68,7 +69,7 @@ export const App = () => {
       type="button" className={resetClassName}
       onClick={ () => {
         setarListasVisivel(goodsFromServer)
-        resetClassName = "button is-danger"
+        setresetClassName("button is-danger")
       }}
       >
         Reset
@@ -76,12 +77,7 @@ export const App = () => {
     </div>
 
     <ul>
-      <li data-cy="Good">Dumplings</li>
-      <li data-cy="Good">Carrot</li>
-      <li data-cy="Good">Eggs</li>
-      <li data-cy="Good">Ice cream</li>
-      <li data-cy="Good">Apple</li>
-      <li data-cy="Good">...</li>
+      {listaVisivel.map((item, i) => <li key={item + i} data-cy="Good">{item}</li>)}
     </ul>
   </div>
   )

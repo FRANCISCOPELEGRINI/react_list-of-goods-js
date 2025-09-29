@@ -14,22 +14,63 @@ export const goodsFromServer = [
   'Garlic',
 ];
 
-export const App = () => (
+export const App = () => {
+  let alphabeticallyClassName = "button is-info is-light"
+  let lengthClassName = "button is-success is-light"
+  let reverseClassName = "button is-warning is-light"
+  let resetClassName = "button is-danger is-light"
+  let [listaVisivel, setarListasVisivel] = useState(goodsFromServer)
+   
+  function alphabetically () {
+    return listaVisivel.sort((good1,good2) => good1.length - good2.length)
+  }
+  function sortbylength () {
+     return listaVisivel.sort()
+  }
+  function reverse () {
+    return listaVisivel.reverse()
+  }
+  
+  return(
+
   <div className="section content">
     <div className="buttons">
-      <button type="button" className="button is-info is-light">
+      <button 
+      type="button" className={alphabeticallyClassName}
+      onClick={ () => {
+        setarListasVisivel(alphabetically());
+        alphabeticallyClassName = "button is-info"}}
+      >
         Sort alphabetically
       </button>
 
-      <button type="button" className="button is-success is-light">
+      <button 
+      type="button" className={lengthClassName}
+      onClick={ () => {
+        setarListasVisivel(sortbylength())
+        lengthClassName = "button is-success"
+      }}
+      >
         Sort by length
       </button>
 
-      <button type="button" className="button is-warning is-light">
+      <button 
+      type="button" className={reverseClassName}
+      onClick={ () => {
+        setarListasVisivel(reverse())
+        reverseClassName = "button is-warning"
+      }}
+      >
         Reverse
       </button>
 
-      <button type="button" className="button is-danger is-light">
+      <button 
+      type="button" className={resetClassName}
+      onClick={ () => {
+        setarListasVisivel(goodsFromServer)
+        resetClassName = "button is-danger"
+      }}
+      >
         Reset
       </button>
     </div>
@@ -43,4 +84,5 @@ export const App = () => (
       <li data-cy="Good">...</li>
     </ul>
   </div>
-);
+  )
+};

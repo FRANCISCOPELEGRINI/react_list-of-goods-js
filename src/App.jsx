@@ -1,7 +1,6 @@
 import 'bulma/css/bulma.css';
 import './App.scss';
-import React, { useState, useCallback } from 'react';
-
+import React, { useState } from 'react';
 export const goodsFromServer = [
   'Dumplings',
   'Carrot',
@@ -16,110 +15,70 @@ export const goodsFromServer = [
 ];
 
 export const App = () => {
-  const [visibleList, setVisibleList] = useState(goodsFromServer);
-  const [sortMode, setSortMode] = useState('none');
-  const [isReversed, setIsReversed] = useState(false);
+  let [alphabeticallyClassName, setalphabeticallyClassName] = useState("button is-info is-light")
+  let [lengthClassName, setlengthClassName] = useState("button is-success is-light")
+  let [reverseClassName, setreverseClassName] = useState("button is-warning is-light")
+  let [resetClassName, setresetClassName] = useState("button is-danger is-light")
+  let [listaVisivel, setarListasVisivel] = useState(goodsFromServer)
+   
+  function handleSortAlphabetically () {
+    // return [...listaVisivel].sort()
+    return [...listaVisivel].sort((a, b) => a.localeCompare(b))
+  }
+  function handleSortByLength () {
+     return [...listaVisivel].sort((good1,good2) => good1.length - good2.length)
+  }
+  function handleToggleReverse () {
+    return [...listaVisivel].reverse()
+  }
   
-  const baseList = goodsFromServer;
-  
-  const getSortedAndReversedList = useCallback((mode, reversed) => {
-    let sortedList = [...baseList];
-    
-    if (mode === 'alphabetical') {
-      sortedList.sort((a, b) => a.localeCompare(b));
-    } else if (mode === 'length') {
-      sortedList.sort((a, b) => a.length - b.length);
-    }
-    
-    if (reversed) {
-      sortedList.reverse();
-    }
-    
-    return sortedList;
-  }, [baseList]);
+  return(
 
-  const handleSortAlphabetically = () => {
-    const newSortMode = 'alphabetical';
-    const newList = getSortedAndReversedList(newSortMode, isReversed);
-    
-    setSortMode(newSortMode);
-    setVisibleList(newList);
-  };
+  <div className="section content">
+    <div className="buttons">
+      <button 
+      type="button" className={alphabeticallyClassName}
+      onClick={ () => {
+        setarListasVisivel(handleSortAlphabetically());
+        setalphabeticallyClassName("button is-info")}}
+      >
+        Sort alphabetically
+      </button>
 
-  const handleSortByLength = () => {
-    const newSortMode = 'length';
-    const newList = getSortedAndReversedList(newSortMode, isReversed);
-    
-    setSortMode(newSortMode);
-    setVisibleList(newList);
-  };
-  
-  const handleToggleReverse = () => {
-    const newIsReversed = !isReversed;
-    const newList = getSortedAndReversedList(sortMode, newIsReversed);
-    
-    setIsReversed(newIsReversed);
-    setVisibleList(newList);
-  };
+      <button 
+      type="button" className={lengthClassName}
+      onClick={ () => {
+        setarListasVisivel(handleSortByLength())
+        setlengthClassName("button is-success")
+      }}
+      >
+        Sort by length
+      </button>
 
-  const handleReset = () => {
-    setVisibleList(goodsFromServer);
-    setSortMode('none');
-    setIsReversed(false);
-  };
-  
-  const alphabeticallyClassName = `button is-info ${sortMode === 'alphabetical' ? '' : 'is-light'}`;
-  const lengthClassName = `button is-success ${sortMode === 'length' ? '' : 'is-light'}`;
-  const reverseClassName = `button is-warning ${isReversed ? '' : 'is-light'}`;
-  
-  const isResetVisible = sortMode !== 'none' || isReversed;
-  const resetClassName = `button is-danger ${isResetVisible ? '' : 'is-light'}`;
+      <button 
+      type="button" className={reverseClassName}
+      onClick={ () => {
+        setarListasVisivel(handleToggleReverse())
+        setreverseClassName("button is-warning")
+      }}
+      >
+        Reverse
+      </button>
 
-  return (
-    <div className="section content">
-      <div className="buttons">
-        <button
-          type="button"
-          className={alphabeticallyClassName}
-          onClick={handleSortAlphabetically}
-        >
-          Sort alphabetically
-        </button>
-
-        <button
-          type="button"
-          className={lengthClassName}
-          onClick={handleSortByLength}
-        >
-          Sort by length
-        </button>
-
-        <button
-          type="button"
-          className={reverseClassName}
-          onClick={handleToggleReverse}
-        >
-          Reverse
-        </button>
-        
-        {isResetVisible && (
-          <button
-            type="button"
-            className={resetClassName}
-            onClick={handleReset}
-          >
-            Reset
-          </button>
-        )}
-      </div>
-      
-      <ul>
-        {visibleList.map((item, i) => (
-          <li key={item + i} data-cy="Good">
-            {item}
-          </li>
-        ))}
-      </ul>
+      <button 
+      type="button" className={resetClassName}
+      onClick={ () => {
+        setarListasVisivel(goodsFromServer)
+        setresetClassName("button is-danger")
+      }}
+      >
+        Reset
+      </button>
     </div>
-  );
+
+    <ul>
+      {listaVisivel.map((item, i) => <li key={item + i} data-cy="Good">{item}</li>)}
+    </ul>
+  </div>
+  )
 };

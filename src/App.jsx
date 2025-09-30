@@ -22,14 +22,13 @@ export const App = () => {
   let [listaVisivel, setarListasVisivel] = useState(goodsFromServer)
    
   function handleSortAlphabetically () {
-    // return [...listaVisivel].sort()
-    return [...listaVisivel].sort((a, b) => a.localeCompare(b))
+   setarListasVisivel([...listaVisivel].sort((a, b) => a.localeCompare(b)))
   }
   function handleSortByLength () {
-     return [...listaVisivel].sort((good1,good2) => good1.length - good2.length)
+    setarListasVisivel([...listaVisivel].sort((good1,good2) => good1.length - good2.length))
   }
   function handleToggleReverse () {
-    return [...listaVisivel].reverse()
+    setarListasVisivel([...listaVisivel].reverse())
   }
   
   return(
@@ -39,7 +38,7 @@ export const App = () => {
       <button 
       type="button" className={alphabeticallyClassName}
       onClick={ () => {
-        setarListasVisivel(handleSortAlphabetically());
+        handleSortAlphabetically();
         setalphabeticallyClassName("button is-info")}}
       >
         Sort alphabetically
@@ -48,7 +47,7 @@ export const App = () => {
       <button 
       type="button" className={lengthClassName}
       onClick={ () => {
-        setarListasVisivel(handleSortByLength())
+        handleSortByLength()
         setlengthClassName("button is-success")
       }}
       >
@@ -58,7 +57,7 @@ export const App = () => {
       <button 
       type="button" className={reverseClassName}
       onClick={ () => {
-        setarListasVisivel(handleToggleReverse())
+        handleToggleReverse()
         setreverseClassName("button is-warning")
       }}
       >
